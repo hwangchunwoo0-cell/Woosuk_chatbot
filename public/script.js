@@ -76,8 +76,7 @@ userInput.addEventListener('keypress', (event) => {
     }
 });
 
-// [삭제됨] 하단 추천 버튼 클릭 이벤트 리스너
-// suggestionButtons.forEach(button => { ... });
+
 
 // [남아있음] 메시지 버블 내 버튼 클릭 이벤트 리스너
 messageButtons.forEach(button => {
@@ -89,3 +88,23 @@ messageButtons.forEach(button => {
 
 // 페이지 로드 시 입력창에 포커스
 userInput.focus();
+
+
+// 현재 접속 시간을 표시하는 기능
+
+function displayCurrentTime() {
+    const timeElement = document.getElementById('current-time');
+    const now = new Date();
+    
+    // 한국 시간 형식으로 변환 (예: 오후 02:30)
+    const timeString = now.toLocaleTimeString('ko-KR', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: true 
+    });
+
+    timeElement.textContent = timeString;
+}
+
+// 페이지가 로드되면 바로 시간 표시 함수 실행
+displayCurrentTime();
