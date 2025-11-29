@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const dataPath = path.join(__dirname, '..', 'data', 'responses.json');
+const dataPath = path.join(__dirname, '..', 'data', 'academics.json');
 let chatbotData = { keywords: [], default_response: "데이터 로드 실패." };
 
 try {
