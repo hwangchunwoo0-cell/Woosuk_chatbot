@@ -23,7 +23,7 @@ app.post('/api/chat', (req, res) => {
 
     try {
         // 규칙 기반 함수를 호출하여 응답 생성 
-        const botResponse = getRuleBasedResponse(message);
+        const botResponse = getBotResponse(message);
         
         // 응답 전송
         res.json({ response: botResponse });
