@@ -13,7 +13,15 @@ let conversationHistory = []; //사용 안함 ai 연결용 구조 유지
 function displayMessage(content, sender) {
     const msgDiv = document.createElement('div');
     msgDiv.classList.add('message', `${sender}-message`);
-    msgDiv.textContent = content;
+
+    //링크를 하이퍼링크로 변환
+    const linkRegex = /\[(.*?)\]\((.*?)\)/g;
+    const htmlContent = content.replace(linkRegex, (match, text, url) => {
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+    });
+
+    msgDiv.innerHTML = htmlContent.replace(/\n/g, '<br>');
+    //msgDiv.textContent = content;
     chatBox.appendChild(msgDiv);
     //스크롤을 항상 맨 아래로 이동
     chatBox.scrollTop = chatBox.scrollHeight;
