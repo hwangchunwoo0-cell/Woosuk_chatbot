@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const dataPath = path.join(__dirname, '..', 'data', 'responses.json');
+const dataPath = path.join(__dirname, '..', 'data', 'academics.json');
 let chatbotData = { keywords: [], default_response: "데이터 로드 실패." };
 
 try {
@@ -16,24 +16,27 @@ try {
 function getBotResponse(message) {
     const msg = message.toLowerCase().trim();
 
-    //JSON 데이터 순회 및 키워드 찾기
+    // JSON 데이터 순회 및 키워드 찾기
     for (const item of chatbotData.keywords) {
-        //  keyword, aliases 확인
-        const matchFound = 
-            msg.includes(item.keyword.toLowerCase()) || 
-            item.aliases.some(alias => msg.includes(alias.toLowerCase()));
+        const keyword = item.keyword ? String(item.keyword).toLowerCase() : '';
+        const aliases = Array.isArray(item.aliases) ? item.aliases : [];
 
-        if (matchFound) {
+        const foundInKeyword = keyword !== '' && msg.includes(keyword);
+        const foundInAliases = aliases.some(alias => {
+            return typeof alias === 'string' && alias !== '' && msg.includes(alias.toLowerCase());
+        });
+
+        if (foundInKeyword || foundInAliases) {
             return item.response; // 일치하는 응답 반환
         }
     }
 
-    // 3. 특수 키워드 (인사말 등) 처리 (선택적)
+    // 기본 인사 응답 처리
     if (msg.includes("안녕") || msg.includes("안녕하세요")) {
         return "안녕하세요! 저는 우석대 도우미 우디봇입니다. 무엇을 도와드릴까요?";
     }
 
-    // 4. 일치하는 키워드가 없는 경우 JSON에 정의된 기본 응답을 반환합니다.
+    // 기본 응답 처리
     return chatbotData.default_response.replace('{message}', message);
 }
 
